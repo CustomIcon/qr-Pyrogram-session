@@ -27,8 +27,13 @@ if args.token:
     ) as err:
         sys.exit(print(err))
     me = app.get_me().first_name
+    session_string = app.export_session_string()
     app.stop()
-    sys.exit(print(f"Generated session for {me}\n\n quitting..."))
+    sys.exit(
+        print(
+            f"Generated session for {me}\n\nSessionString:\n{session_string}\n\nquitting..."
+        )
+    )
 
 app.add_handler(
     handlers.RawUpdateHandler(

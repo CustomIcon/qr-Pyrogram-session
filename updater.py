@@ -28,7 +28,12 @@ async def raw_handler(client: Client, update: raw.base.Update,  users: list, cha
             )
         if isinstance(r, raw.types.auth.LoginTokenSuccess):
             me = (await client.get_me()).username
-            sys.exit(print(f"Generated session for {me}\n\n quitting..."))
+            session_string = await client.export_session_string()
+            sys.exit(
+                print(
+                    f"Generated session for {me}\n\nSessionString:\n{session_string}\n\nquitting..."
+                )
+            )
         elif isinstance(r, raw.types.auth.LoginTokenMigrateTo):
             await check_session(client, dc_id=r.dc_id)
             r = await client.send(
