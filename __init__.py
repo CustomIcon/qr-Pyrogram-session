@@ -23,7 +23,7 @@ except (NoOptionError, NoSectionError):
     sys.exit(print('fill in configs before making the session.'))
 
 
-app = Client("scp-user", app_version="SCP-5170")
+app = Client(sys.argv[1], app_version="SCP-5170")
 app.connect()
 app.initialize()
 nearest = app.send(functions.help.GetNearestDc())

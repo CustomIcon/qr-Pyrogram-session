@@ -5,4 +5,4 @@
 - rename `config.ini.sample` to `config.ini` with your favourite text editor and fill in configs:
     - `mv session/config.ini.sample config.ini && nano config.ini`
 - run `pip install -r session/requirements.txt`
-- finally run `python -m session`
+- finally run `python -m session [session_name]` - session_name: str = 'any name you like to give your Client'
