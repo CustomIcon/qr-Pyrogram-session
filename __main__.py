@@ -1,4 +1,4 @@
-from session import check_session, create_qrcodes, nearest, app
+from .import check_session, create_qrcodes, nearest, app
 import threading
 from pyrogram import idle
 import asyncio
