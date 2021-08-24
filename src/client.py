@@ -12,4 +12,4 @@ for arg in Args:
     )
 args = parser.parse_args()
 
-app = Client(args.session_name or str(__package__), api_id=APP_ID, api_hash=APP_HASH)
+app = Client(args.session_name or "pyrogram", api_id=APP_ID, api_hash=APP_HASH)

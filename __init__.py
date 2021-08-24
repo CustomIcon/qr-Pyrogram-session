@@ -1,19 +1,18 @@
 import logging
 import sys
 from pyrogram import Client, errors, handlers
-from .updater import raw_handler
-from .client import app
-from .config import APP_ID, APP_HASH
-from .client import args
+from .src import raw_handler, args, app, APP_ID, APP_HASH
+from rich.logging import RichHandler
 
-
-
-logging.basicConfig(level=logging.INFO)
+FORMAT = "%(message)s"
+logging.basicConfig(
+    level=logging.INFO, format=FORMAT, datefmt="[%X]", handlers=[RichHandler()]
+)
 
 
 if args.token:
     app = Client(
-        args.session_name or str(__package__),
+        args.session_name or "pyrogram",
         api_id=APP_ID,
         api_hash=APP_HASH,
         bot_token=args.token
@@ -29,10 +28,11 @@ if args.token:
     me = app.get_me().first_name
     session_string = app.export_session_string()
     app.stop()
-    sys.exit(
-        print(
-            f"Generated session for {me}\n\nSessionString:\n{session_string}\n\nquitting..."
+    logging.info(
+            f"Generated session for {me}"
         )
+    sys.exit(
+        print(f'SessionString:\n{session_string}\n\nquitting...')
     )
 
 app.add_handler(
