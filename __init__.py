@@ -23,7 +23,7 @@ except (NoOptionError, NoSectionError):
     sys.exit(print('fill in configs before making the session.'))
 
 
-app = Client(sys.argv[1], app_version="SCP-5170")
+app = Client(sys.argv[1])
 app.connect()
 app.initialize()
 nearest = app.send(functions.help.GetNearestDc())
@@ -36,7 +36,7 @@ def clear_screen():
 
 
 @app.on_raw_update()
-async def raw_handler(client: Client, update: base.Update):
+async def raw_handler(client: Client, update: base.Update,  users: list, chats: list):
     global ACCEPTED
     if isinstance(update, types.auth.LoginToken):
         if nearest.nearest_dc != await client.storage.dc_id():
