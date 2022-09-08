@@ -1,9 +1,9 @@
 from pyrogram.session import Session, Auth
 from pyrogram import Client, raw
+import asyncio
 import os
 from qrcode import QRCode
 from base64 import urlsafe_b64encode as base64url
-from time import sleep
 from subprocess import call
 from .config import APP_ID, APP_HASH
 from .client import app
@@ -30,36 +30,38 @@ async def check_session(
     return await client.session.start()
 
 
-def clear_screen():
+async def clear_screen():
     call(['cls' if os.name == 'nt' else 'clear'], shell=True)
 
 
-def create_qrcodes():
+async def create_qrcodes():
+    if not app.is_initialized:
+        await app.dispatcher.start()
+        app.is_initialized = True
     while True:
-        clear_screen()
+        await clear_screen()
         print(
             'Scan the QR code below:'
         )
         print(
             'Settings > Privacy and Security > Active Sessions > Scan QR Code'
         )
-        r = app.send(
+        r = await app.invoke(
             raw.functions.auth.ExportLoginToken(
                 api_id=APP_ID, api_hash=APP_HASH, except_ids=[]
             )
         )
         if isinstance(r, raw.types.auth.LoginToken):
-            _gen_qr(r.token)
-            sleep(30)
+            await _gen_qr(r.token)
+            await asyncio.sleep(30)
 
 
-def _gen_qr(token:bytes):
+async def _gen_qr(token: bytes):
     token = base64url(token).decode("utf8")
-    login_url = "tg://login?token=" + token
+    login_url = f"tg://login?token={token}"
     qr.clear()
     qr.add_data(login_url)
     qr.print_ascii()
 
 app.connect()
-app.initialize()
-nearest = app.send(raw.functions.help.GetNearestDc())
+nearest = app.invoke(raw.functions.help.GetNearestDc())

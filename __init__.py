@@ -1,7 +1,7 @@
 import logging
 import sys
-from pyrogram import Client, errors, handlers
-from .src import raw_handler, args, app, APP_ID, APP_HASH
+from pyrogram import Client, errors
+from .src import args, app, APP_ID, APP_HASH
 from rich.logging import RichHandler
 
 FORMAT = "%(message)s"
@@ -34,10 +34,4 @@ if args.token:
     sys.exit(
         print(f'SessionString:\n{session_string}\n\nquitting...')
     )
-
-app.add_handler(
-    handlers.RawUpdateHandler(
-        raw_handler
-    )
-)
 

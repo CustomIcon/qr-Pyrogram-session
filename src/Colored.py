@@ -8,7 +8,7 @@ class ColoredArgParser(argparse.ArgumentParser):
     # issues by attempting to override the __init__ method
     # RED : Error, GREEN : Okay, YELLOW : Warning, Blue: Help/Info 
     color_dict = {'RED' : '1;31', 'GREEN' : '1;32', 
-                  'YELLOW' : '1;33', 'BLUE' : '1;36'}
+                'YELLOW' : '1;33', 'BLUE' : '1;36'}
 
     def print_usage(self, file = None):
         if file is None:

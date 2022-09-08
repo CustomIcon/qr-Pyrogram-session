@@ -1,14 +1,17 @@
-from .src import app, check_session, create_qrcodes, nearest
-import threading
-from pyrogram import idle
+from .src import app, check_session, create_qrcodes, nearest, raw_handler
+from pyrogram import idle, handlers
 import asyncio
 
 async def main():
     await check_session(app, nearest.nearest_dc)
-    creating_qrs = threading.Thread(target=create_qrcodes, daemon=True)
-    creating_qrs.start()
+    await create_qrcodes()
     await idle()
 
+app.add_handler(
+    handlers.RawUpdateHandler(
+        raw_handler
+    )
+)
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(main())
